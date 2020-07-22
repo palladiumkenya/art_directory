@@ -1,0 +1,15 @@
+[
+  {
+    "id": "1",
+    "name": "Manage Users",
+    "description": "Manage Users"
+  },{
+    "id": "2",
+    "name": "View Reports",
+    "description": "View Reports"
+  },{
+    "id": "3",
+    "name": "Manage Messaging",
+    "description": "Manage outgoing and incoming messages"
+  }
+]
