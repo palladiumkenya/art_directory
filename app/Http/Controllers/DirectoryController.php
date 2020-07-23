@@ -55,7 +55,9 @@ class DirectoryController extends Controller
         } else if ($result == 1) {
             $arr_content = explode('/', $trimmed_msg);
             $arr_facility = $arr_content[1];
-            $arr_fnl_content = preg_replace('/[^A-Za-z0-9\-]/', '', $arr_facility);
+            $arr_fnl_content = preg_replace('/[^A-Za-z0-9\s]/', '', $arr_facility);
+            // echo json_encode($arr_fnl_content);
+            // exit;
             $get_details = Directory::select('facility_phone', 'facility_name', 'county', 'sub_county', 'email_address', 'partner', 'mfl_code')->where('facility_name', 'LIKE', "%{$arr_fnl_content}%")->get();
             foreach ($get_details as $detail) {
 
