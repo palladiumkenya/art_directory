@@ -14,13 +14,15 @@ use Yajra\DataTables\Facades\DataTables;
 
 class DirectoryController extends Controller
 {
-    public function send_sms($final_msg, $phone_no)
+    public function send_sms($phone_no, $final_msg)
     {
         // $to=$request->input('to');
         // $message =$request->input('message');
 
-        $username = env('AT_USER');
-        $apiKey = env('AT_API_KEY');
+        // $username = env('AT_USER');
+        // $apiKey = env('AT_API_KEY');
+        $username = "mhealthkenya";
+        $apiKey = "9318d173cb9841f09c73bdd117b3c7ce3e6d1fd559d3ca5f547ff2608b6f3212";
         $AT = new AfricasTalking($username, $apiKey);
 
         // Get one of the services
@@ -48,8 +50,7 @@ class DirectoryController extends Controller
                 $final_msg = 'Facility Number: '  . $get_content->facility_phone . ' ' . 'Facility Name: ' . $get_content->facility_name . ' ' . 'County: ' .
                     $get_content->county . ' ' . 'Sub County: ' . $get_content->sub_county . ' ' . 'Email: '  . $get_content->email_address . ' ' . 'Partner: '  . $get_content->partner;
 
-                $sending_msg = $this->send_sms($final_msg, $phone_no);
-                echo $sending_msg;
+                $this->send_sms($phone_no, $final_msg);
             }
         } else if ($result == 1) {
             $arr_content = explode('/', $trimmed_msg);
@@ -59,8 +60,7 @@ class DirectoryController extends Controller
             foreach ($get_details as $detail) {
 
                 $final_msg = 'Facility Name: ' . $detail->facility_name . ' ' . 'MFL Code: ' . $detail->mfl_code . ' ' . 'County: ' . $detail->county;
-                $sending_msg = $this->send_sms($final_msg, $phone_no);
-                echo $sending_msg;
+                $this->send_sms($phone_no, $final_msg);
             }
         }
         IncomingMsg::where('id', $id)->update(array('processed' => 'Processed'));
@@ -76,39 +76,40 @@ class DirectoryController extends Controller
         ]);
     }
 
-    public function facilitiesDT() {
+    public function facilitiesDT()
+    {
 
 
         $facilities = Directory::all();
 
         return DataTables::of($facilities)
-            ->editColumn('mfl_code', function($facility) {
+            ->editColumn('mfl_code', function ($facility) {
                 return $facility->mfl_code;
             })
 
-            ->editColumn('facility_name', function($facility) {
+            ->editColumn('facility_name', function ($facility) {
                 return $facility->facility_name;
             })
 
-            ->editColumn('county', function($facility) {
+            ->editColumn('county', function ($facility) {
                 return $facility->county;
             })
-            ->editColumn('sub_county', function($facility) {
+            ->editColumn('sub_county', function ($facility) {
                 return $facility->sub_county;
             })
 
-            ->editColumn('facility_phone', function($facility) {
+            ->editColumn('facility_phone', function ($facility) {
                 return $facility->facility_phone;
             })
 
-            ->addColumn('actions', function($facility){ // add custom column
+            ->addColumn('actions', function ($facility) { // add custom column
                 $actions = '<div class="pull-right">
-                        <button source="' . route('edit-facility' ,  $facility->id) . '"
-                    class="btn btn-warning btn-link btn-sm edit-facility-btn" acs-id="'.$facility->id .'">
+                        <button source="' . route('edit-facility',  $facility->id) . '"
+                    class="btn btn-warning btn-link btn-sm edit-facility-btn" acs-id="' . $facility->id . '">
                     <i class="material-icons">edit</i> Edit</button>';
-                $actions .= '<form action="'. route('delete-facility',  $facility->id) .'" style="display: inline;" method="post" class="del_facility_form">';
+                $actions .= '<form action="' . route('delete-facility',  $facility->id) . '" style="display: inline;" method="post" class="del_facility_form">';
                 $actions .= method_field('DELETE');
-                $actions .= csrf_field() .'<button class="btn btn-danger btn-sm">Delete</button></form>';
+                $actions .= csrf_field() . '<button class="btn btn-danger btn-sm">Delete</button></form>';
                 $actions .= '</div>';
                 return $actions;
             })
@@ -121,16 +122,16 @@ class DirectoryController extends Controller
 
         $this->validate($request, [
             'facility_phone' => 'required',
-            'facility_name' =>'required',
-            'mfl_code' =>'required',
-            'partner' =>'required',
-            'county' =>'required',
-            'sub_county' =>'required',
-            'location' =>'nullable',
-            'sub_location' =>'nullable',
-            'alt_facility_phone' =>'nullable',
-            'email_address' =>'required',
-            'clinic' =>'required',
+            'facility_name' => 'required',
+            'mfl_code' => 'required',
+            'partner' => 'required',
+            'county' => 'required',
+            'sub_county' => 'required',
+            'location' => 'nullable',
+            'sub_location' => 'nullable',
+            'alt_facility_phone' => 'nullable',
+            'email_address' => 'required',
+            'clinic' => 'required',
         ]);
 
         $directory = new Directory();
@@ -162,16 +163,16 @@ class DirectoryController extends Controller
     {
         $data = request()->validate([
             'facility_phone' => 'required',
-            'facility_name' =>'required',
-            'mfl_code' =>'required',
-            'partner' =>'required',
-            'county' =>'required',
-            'sub_county' =>'required',
-            'location' =>'nullable',
-            'sub_location' =>'nullable',
-            'alt_facility_phone' =>'nullable',
-            'email_address' =>'required',
-            'clinic' =>'required',
+            'facility_name' => 'required',
+            'mfl_code' => 'required',
+            'partner' => 'required',
+            'county' => 'required',
+            'sub_county' => 'required',
+            'location' => 'nullable',
+            'sub_location' => 'nullable',
+            'alt_facility_phone' => 'nullable',
+            'email_address' => 'required',
+            'clinic' => 'required',
         ]);
 
         Directory::where('id', $request->id)->update($data);
@@ -193,5 +194,4 @@ class DirectoryController extends Controller
 
         return redirect('facilities');
     }
-
 }
