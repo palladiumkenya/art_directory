@@ -69,7 +69,14 @@ class DirectoryController extends Controller
 
     public  function facilities()
     {
-        $facilities = Directory::all();
+        if (auth()->user()->user_group == 3){ //county admin
+            $facilities = Directory::where('county_id', auth()->user()->county_id)->get();
+        }elseif (auth()->user()->user_group == 4){ //sub county admin
+            $facilities = Directory::where('sub_county_id', auth()->user()->sub_county_id)->get();
+
+        }else{ //others
+            $facilities = Directory::all();
+        }
 
         return view('directory.facilities')->with([
             'facilities' => $facilities,
@@ -78,8 +85,15 @@ class DirectoryController extends Controller
 
     public function facilitiesDT() {
 
+        if (auth()->user()->user_group == 3){ //county admin
+            $facilities = Directory::where('county_id', auth()->user()->county_id)->get();
+        }elseif (auth()->user()->user_group == 4){ //sub county admin
+            $facilities = Directory::where('sub_county_id', auth()->user()->sub_county_id)->get();
 
-        $facilities = Directory::all();
+        }else{ //others
+            $facilities = Directory::all();
+        }
+
 
         return DataTables::of($facilities)
             ->editColumn('mfl_code', function($facility) {
@@ -102,13 +116,20 @@ class DirectoryController extends Controller
             })
 
             ->addColumn('actions', function($facility){ // add custom column
-                $actions = '<div class="pull-right">
-                        <button source="' . route('edit-facility' ,  $facility->id) . '"
+                $actions = '<div class="pull-right">';
+
+                if (auth()->user()->role->has_perm([4])){
+                        $actions .= '<button source="' . route('edit-facility' ,  $facility->id) . '"
                     class="btn btn-warning btn-link btn-sm edit-facility-btn" acs-id="'.$facility->id .'">
                     <i class="material-icons">edit</i> Edit</button>';
-                $actions .= '<form action="'. route('delete-facility',  $facility->id) .'" style="display: inline;" method="post" class="del_facility_form">';
-                $actions .= method_field('DELETE');
-                $actions .= csrf_field() .'<button class="btn btn-danger btn-sm">Delete</button></form>';
+                }
+
+                if (auth()->user()->role->has_perm([5])) {
+                    $actions .= '<form action="'. route('delete-facility',  $facility->id) .'" style="display: inline;" method="post" class="del_facility_form">';
+                    $actions .= method_field('DELETE');
+                    $actions .= csrf_field() .'<button class="btn btn-danger btn-sm">Delete</button></form>';
+                }
+
                 $actions .= '</div>';
                 return $actions;
             })

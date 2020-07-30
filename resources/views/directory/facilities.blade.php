@@ -166,11 +166,16 @@
                         </h4>
                     </div>
                     <div class="card-body">
-                        <div class="toolbar">
-                            <button class="btn btn-primary btn-sm" id="add-facility-btn" data-toggle="modal" data-target="#facility-modal">
-                                <i class="fa fa-plus"></i> Add Facility
-                            </button>
-                        </div>
+
+                        @if(auth()->user()->role->has_perm([6]))
+                            <div class="toolbar">
+                                <button class="btn btn-primary btn-sm" id="add-facility-btn" data-toggle="modal" data-target="#facility-modal">
+                                    <i class="fa fa-plus"></i> Add Facility
+                                </button>
+                            </div>
+                        @endif
+
+
                         @include('layouts.common.success')
                         @include('layouts.common.warnings')
                         @include('layouts.common.warning')

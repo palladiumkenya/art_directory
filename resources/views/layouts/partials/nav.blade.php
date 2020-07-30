@@ -8,7 +8,7 @@
                 <span class="icon-bar"></span>
             </button>
             <a class="navbar-brand" href="{{ url('/') }}">
-                <img src="{{ asset('images/logo.webp') }}"/>
+                <img src="{{ url('images/logo.webp') }}"/>
             </a>
         </div>
         <div class="collapse navbar-collapse">
