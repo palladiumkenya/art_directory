@@ -141,10 +141,10 @@
 
                             <div class="col-lg-6 col-md-6 col-sm-3">
                                 <div class="dropdown bootstrap-select show-tick">
-                                    <select class="selectpicker" data-style="select-with-transition" title="Choose Sub County" data-size="7" tabindex="-98"
-                                            name="sub_county_id" id="sub_county_id" required>
-                                        @foreach( \App\SubCounty::all() as $subcounty)
-                                            <option value="{{ $subcounty->id  }}">{{ $subcounty->name }}</option>
+                                    <select class="selectpicker" data-style="select-with-transition" title="Choose County" data-size="7" tabindex="-98"
+                                            name="county_id" id="county_id" required>
+                                        @foreach( \App\County::all() as $county)
+                                            <option value="{{ $county->id  }}">{{ $county->name }}</option>
                                         @endforeach
                                     </select>
 

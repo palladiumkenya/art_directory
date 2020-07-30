@@ -120,8 +120,10 @@
                             $('#mfl_code').val(data['mfl_code']);
                             $('#facility_phone').val(data['facility_phone']);
                             $('#partner').val(data['partner']);
-                            $('#county').val(data['county']);
-                            $('#sub_county').val(data['sub_county']);
+                            $('#county_id').val(data['county_id']).trigger('change');
+                            $('#sub_county_id').val(data['sub_county_id']).trigger('change');
+                            // $('#county').val(data['county']);
+                            // $('#sub_county').val(data['sub_county']);
                             $('#location').val(data['location']);
                             $('#sub_location').val(data['sub_location']);
                             $('#alt_facility_phone').val(data['alt_facility_phone']);
@@ -259,14 +261,29 @@
 
                         <div class="form-group">
                             <div class="row">
-                                <div class="col-sm-6">
-                                    <label class="control-label" for="county">County <span style="color: red">*</span></label>
-                                    <input type="text" class="form-control" id="county" name="county"required/>
+                                <div class="col-lg-6 col-md-6 col-sm-3">
+                                    <div class="dropdown bootstrap-select show-tick">
+                                        <select class="selectpicker" data-style="select-with-transition" title="Choose County" data-size="7" tabindex="-98"
+                                                name="county_id" id="county_id" required>
+                                            @foreach( \App\County::all() as $county)
+                                                <option value="{{ $county->id  }}">{{ $county->name }}</option>
+                                            @endforeach
+                                        </select>
+
+                                    </div>
                                 </div>
 
-                                <div class="col-sm-6">
-                                    <label class="control-label" for="sub_county">Sub County <span style="color: red">*</span></label>
-                                    <input type="text" class="form-control" id="sub_county" name="sub_county"required/>
+
+                                <div class="col-lg-6 col-md-6 col-sm-3">
+                                    <div class="dropdown bootstrap-select show-tick">
+                                        <select class="selectpicker" data-style="select-with-transition" title="Choose Sub County" data-size="7" tabindex="-98"
+                                                name="sub_county_id" id="sub_county_id" required>
+                                            @foreach( \App\SubCounty::all() as $subcounty)
+                                                <option value="{{ $subcounty->id  }}">{{ $subcounty->name }}</option>
+                                            @endforeach
+                                        </select>
+
+                                    </div>
                                 </div>
                             </div>
                         </div>

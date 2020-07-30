@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\County;
+use App\SubCounty;
 use Carbon\Carbon;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
@@ -9,6 +11,7 @@ use App\IncomingMsg;
 use App\Directory;
 use Illuminate\Mail\Message;
 use AfricasTalking\SDK\AfricasTalking;
+use PHPUnit\Framework\Constraint\Count;
 use Yajra\DataTables\Facades\DataTables;
 
 
@@ -105,10 +108,10 @@ class DirectoryController extends Controller
             })
 
             ->editColumn('county', function($facility) {
-                return $facility->county;
+                return optional(County::find($facility->county_id))->name;
             })
             ->editColumn('sub_county', function($facility) {
-                return $facility->sub_county;
+                return optional(SubCounty::find($facility->sub_county_id))->name;
             })
 
             ->editColumn('facility_phone', function($facility) {
@@ -145,8 +148,8 @@ class DirectoryController extends Controller
             'facility_name' =>'required',
             'mfl_code' =>'required',
             'partner' =>'required',
-            'county' =>'required',
-            'sub_county' =>'required',
+            'county_id' =>'required',
+            'sub_county_id' =>'required',
             'location' =>'nullable',
             'sub_location' =>'nullable',
             'alt_facility_phone' =>'nullable',
@@ -159,8 +162,8 @@ class DirectoryController extends Controller
         $directory->facility_name = $request->facility_name;
         $directory->mfl_code = $request->mfl_code;
         $directory->partner = $request->partner;
-        $directory->county = $request->county;
-        $directory->sub_county = $request->sub_county;
+        $directory->county_id = $request->county_id;
+        $directory->sub_county_id = $request->sub_county_id;
         $directory->location = $request->location;
         $directory->sub_location = $request->sub_location;
         $directory->alt_facility_phone = $request->alt_facility_phone;
@@ -186,8 +189,8 @@ class DirectoryController extends Controller
             'facility_name' =>'required',
             'mfl_code' =>'required',
             'partner' =>'required',
-            'county' =>'required',
-            'sub_county' =>'required',
+            'county_id' =>'required',
+            'sub_county_id' =>'required',
             'location' =>'nullable',
             'sub_location' =>'nullable',
             'alt_facility_phone' =>'nullable',
