@@ -1,13 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="301b548d-eef9-4e60-aa5c-ef5f445e1964" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/DirectoryController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/DirectoryController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/UserController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/UserController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/directory/facilities.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/directory/facilities.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/users/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/users/index.blade.php" afterDir="false" />
-    </list>
+    <list default="true" id="301b548d-eef9-4e60-aa5c-ef5f445e1964" name="Default Changelist" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -177,7 +171,7 @@
       <option name="presentableId" value="Default" />
       <updated>1595404124080</updated>
       <workItem from="1595404125527" duration="11725000" />
-      <workItem from="1596094448479" duration="8913000" />
+      <workItem from="1596094448479" duration="9039000" />
     </task>
     <servers />
   </component>
@@ -189,5 +183,9 @@
       <screen x="0" y="23" width="1680" height="976" />
     </state>
     <state x="578" y="273" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog/0.23.1680.976@0.23.1680.976" timestamp="1596099585176" />
+    <state x="552" y="232" key="MultipleFileMergeDialog" timestamp="1596477625117">
+      <screen x="0" y="23" width="1680" height="976" />
+    </state>
+    <state x="552" y="232" key="MultipleFileMergeDialog/0.23.1680.976@0.23.1680.976" timestamp="1596477625117" />
   </component>
 </project>
