@@ -150,6 +150,45 @@
                 }
                 return false;
             });
+
+
+            $('#county_id').on('change', function() {
+                $('#sub_county_id').empty();
+
+                $.ajax({
+                    url: '/sub_counties/'+this.value,
+                    dataType: 'JSON',
+                    type: 'GET',
+                    success: function(response) {
+                        // console.log(response);
+
+                        var len = response.data.length;
+
+                        console.log("Length"+len);
+
+                        for( var i = 0; i<len; i++){
+                            var id = response.data[i]['id'];
+                            var name = response.data[i]['name'];
+
+                            // console.log(i);
+                            // console.log(data[i].id);
+                            console.log(id);
+                            console.log(name);
+
+                             console.log("<option value='"+id+"'>"+name+"</option>");
+
+
+                            $('#sub-county-id').append( '<option value="'+id+'">'+name+'</option>' );
+
+                            // $("#sub_county_id").append("<option value='"+id+"'>"+name+"</option>");
+
+                        }
+
+                    }
+                })
+            });
+
+
         });
     </script>
 @endpush
@@ -276,12 +315,16 @@
 
                                 <div class="col-lg-6 col-md-6 col-sm-3">
                                     <div class="dropdown bootstrap-select show-tick">
+
                                         <select class="selectpicker" data-style="select-with-transition" title="Choose Sub County" data-size="7" tabindex="-98"
-                                                name="sub_county_id" id="sub_county_id" required>
-                                            @foreach( \App\SubCounty::all() as $subcounty)
-                                                <option value="{{ $subcounty->id  }}">{{ $subcounty->name }}</option>
-                                            @endforeach
-                                        </select>
+                                                id="sub-county-id" name="sub_county_id" required></select>
+
+{{--                                        <select class="selectpicker" data-style="select-with-transition" title="Choose Sub County" data-size="7" tabindex="-98"--}}
+{{--                                                name="sub_county_id" id="sub_county_id" required>--}}
+{{--                                            @foreach( \App\SubCounty::all() as $subcounty)--}}
+{{--                                                <option value="{{ $subcounty->id  }}">{{ $subcounty->name }}</option>--}}
+{{--                                            @endforeach--}}
+{{--                                        </select>--}}
 
                                     </div>
                                 </div>

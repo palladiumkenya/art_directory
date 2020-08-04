@@ -58,6 +58,9 @@ Route::group(['middleware' => ['auth']], function () {
     Route::put('facilities', 'DirectoryController@update_facility');//->name('update-facility');
     Route::delete('facilities/{facility_id}', 'DirectoryController@delete_facility')->name('delete-facility');
 
+    //county sub counties
+    Route::get('sub_counties/{county_id}', 'HomeController@sub_counties');
+
     //messaging
     Route::get('/messages/incoming','MessagingController@incoming')->middleware('perm:2');
     Route::get('ajax/messages/incoming', 'MessagingController@incomingDT')->name('ajax-incoming-messages')->middleware('perm:2');
