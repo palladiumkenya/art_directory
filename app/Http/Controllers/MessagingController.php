@@ -19,28 +19,29 @@ class MessagingController extends Controller
         ]);
     }
 
-    public function incomingDT() {
+    public function incomingDT()
+    {
 
 
         $incoming = IncomingMsg::all();
 
         return DataTables::of($incoming)
-            ->editColumn('source', function($incoming) {
+            ->editColumn('source', function ($incoming) {
                 return $incoming->source;
             })
 
-            ->editColumn('destination', function($incoming) {
+            ->editColumn('destination', function ($incoming) {
                 return $incoming->destination;
             })
 
-            ->editColumn('msg', function($incoming) {
+            ->editColumn('msg', function ($incoming) {
                 return $incoming->msg;
             })
-            ->editColumn('created_at', function($incoming) {
+            ->editColumn('created_at', function ($incoming) {
                 return $incoming->created_at;
             })
 
-            ->editColumn('processed', function($incoming) {
+            ->editColumn('processed', function ($incoming) {
                 return $incoming->processed;
             })
             ->make(true);
@@ -55,28 +56,29 @@ class MessagingController extends Controller
         ]);
     }
 
-    public function outgoingDT() {
+    public function outgoingDT()
+    {
 
 
         $outgoing = OutgoingMsg::all();
 
         return DataTables::of($outgoing)
-            ->editColumn('source', function($outgoing) {
+            ->editColumn('source', function ($outgoing) {
                 return $outgoing->source;
             })
 
-            ->editColumn('destination', function($outgoing) {
+            ->editColumn('destination', function ($outgoing) {
                 return $outgoing->destination;
             })
 
-            ->editColumn('msg', function($outgoing) {
+            ->editColumn('msg', function ($outgoing) {
                 return $outgoing->msg;
             })
-            ->editColumn('created_at', function($outgoing) {
+            ->editColumn('created_at', function ($outgoing) {
                 return $outgoing->created_at;
             })
 
-            ->editColumn('status', function($outgoing) {
+            ->editColumn('status', function ($outgoing) {
                 return $outgoing->status;
             })
             ->make(true);
