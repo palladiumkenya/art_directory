@@ -22,8 +22,8 @@ class DirectoryController extends Controller
         // $to=$request->input('to');
         // $message =$request->input('message');
 
-        $username = env('AT_USER');
-        $apiKey = env('AT_API_KEY');
+        $username = 'mhealthkenya';
+        $apiKey = '9318d173cb9841f09c73bdd117b3c7ce3e6d1fd559d3ca5f547ff2608b6f3212';
         $AT = new AfricasTalking($username, $apiKey);
 
         // Get one of the services
