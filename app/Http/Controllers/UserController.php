@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Notifications\UserCreated;
 use App\UserGroup;
 use App\User;
+use App\UserPermission;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -70,6 +71,8 @@ class UserController extends Controller
         $this->validate($request, [
             'user_role' => 'required|max:10',
             'email' => 'required|email|max:255|unique:users,email',
+            'county_id' => 'required',
+            'sub_county_id' => 'required',
             'name' => 'required',
             'password' => 'required',
         ]);
@@ -81,6 +84,8 @@ class UserController extends Controller
         $user->name = $request->name;
         $user->user_group = $request->user_role;
         $user->email = $request->email;
+        $user->county_id = $request->county_id;
+        $user->sub_county_id = $request->sub_county_id;
         $user->password = bcrypt($request->password);
 //        $user->password = bcrypt($this->random_pass);
 
@@ -211,6 +216,159 @@ class UserController extends Controller
 
         return redirect('edit-profile');
     }
+
+    public function user_groups()
+    {
+        $user_groups = UserGroup::all();
+
+        return view('users.user_groups')->with([
+            'user_groups' => $user_groups,
+        ]);
+    }
+
+    public function new_user_group(Request $request)
+    {
+        $this->validate($request, [
+            'group_name' => 'required|unique:user_groups,name',
+        ]);
+
+
+        $user_group = new UserGroup();
+        $user_group->name = $request->group_name;
+        $user_group->saveOrFail();
+
+
+        Session::flash("success", "Group has been created");
+
+
+        return redirect()->back();
+    }
+
+
+    public function get_group_details($id)
+    {
+
+        return UserGroup::find($id);
+    }
+
+    public function update_group_details(Request $request)
+    {
+        $this->validate($request, [
+            'id' => 'required|exists:user_groups,id',
+            'group_name' => 'required|unique:user_groups,name',
+        ]);
+
+
+        $user_group = UserGroup::find($request->id);
+        $user_group->name = $request->group_name;
+        $user_group->update();
+
+
+        Session::flash("success", "Group has been updated");
+
+
+        return redirect()->back();
+    }
+
+
+    public function delete_group(Request $request)
+    {
+        $this->validate($request, [
+            'id' => 'required|exists:user_groups,id',
+        ]);
+
+
+        $user_group = UserGroup::find($request->id);
+        $user_group->delete();
+
+
+        Session::flash("success", "Group has been deleted");
+
+
+        return redirect()->back();
+    }
+
+    public function user_group_details($_id)
+    {
+        $ug = UserGroup::find($_id);
+
+        if(is_null($ug))
+            abort(404);
+
+        $users = User::where('user_group',$_id)->get();
+
+        $user_permissions = UserPermission::where('group_id',$_id)->get();
+
+
+
+        return view('users.group_details')->with([
+            'group' => $ug,
+            'users' => $users,
+            'user_permissions' => $user_permissions
+        ]);
+
+    }
+    public function userGroupDetailsDT($_id) {
+
+        $users = User::where('user_group',$_id)->get();
+
+        return DataTables::of($users)
+            ->editColumn('id', function ($user) {
+                return $user->id;
+//                return '<a href="'.url('users/details/'.$user->id) .'" title="View User" >#'. $user->id .' </a>';
+            })
+
+            ->addColumn('role',function ($user) {
+                return optional($user->role)->name;
+            })
+            ->editColumn('name',function ($user) {
+                return $user->name;
+            })
+            ->editColumn('email',function ($user) {
+                return $user->email;
+            })
+            ->addColumn('actions', function($user) {
+                $actions = '<div class="pull-left">';
+//                $actions .= '<a title="Edit User" class="btn btn-link btn-sm btn-warning btn-just-icon"><i class="material-icons">edit</i> </a>';
+//                $actions .= '<a title="View User" href="'.url('users/details/'.$user->id) .'" class="btn btn-info btn-sm pull-right"><i class="material-icons">list</i> View</a>';
+//                $actions .= '<a title="Manage User" class="btn btn-link btn-sm btn-info btn-just-icon"><i class="material-icons">dvr</i> </a>';
+                $actions .= '</div>';
+
+                return $actions;
+            })
+            ->rawColumns(['id','actions'])
+            ->make(true);
+
+    }
+    public function add_group_permission(Request $request)
+    {
+        $this->validate($request, [
+            'permission' => 'bail|required',
+            'group_id' => 'bail|required',
+        ]);
+
+        foreach ($_POST['permission'] as $perm) {
+            $userPermission = new userPermission();
+            $userPermission->group_id = $request->group_id;
+            $userPermission->permission_id = $perm;
+            $userPermission->saveOrFail();
+        }
+
+        request()->session()->flash('success', 'Permissions added successfully');
+
+        return redirect()->back();
+    }
+    public function delete_group_permission($group_id)
+    {
+        $userPermission = UserPermission::find($group_id);
+        if ($data = $userPermission->delete()) {
+            request()->session()->flash("success", "Permission deleted successfully.");
+        }
+        return redirect()->back();
+    }
+
+
+
 
 
 

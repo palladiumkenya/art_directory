@@ -1,10 +1,21 @@
 [
   {
       "id": "1",
-      "name": "Admin"
+      "name": "Super Admin"
+  },{
+      "id": "2",
+      "name": "Partner"
   },
   {
-      "id": "2",
-      "name": "Editor"
+      "id": "3",
+      "name": "County Admin"
+  },
+  {
+      "id": "4",
+      "name": "Sub County Admin"
+  },
+  {
+      "id": "5",
+      "name": "Guest User"
   }
 ]

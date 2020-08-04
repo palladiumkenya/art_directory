@@ -113,30 +113,59 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label class="control-label" for="mobile_no2">Name</label>
-                                    <input type="text" value="{{ $edit ? $selected_user->name : old('name') }}" class="form-control" id="name" name="name" />
+                                    <input type="text" value="{{ $edit ? $selected_user->name : old('name') }}" class="form-control" id="name" name="name" required" />
                                 </div>
                             </div>
 
                             <div class="col-md-6">
                                 <div class="form-group ">
                                     {{--<label class="control-label" for="user_role" style="line-height: 6px;">User Role</label>--}}
-                                    <select class="form-control pb-0 pt-2" name="user_role" id="user_role" required>
-                                        <option value="">--Select User Role--</option>
-                                        @if(count( $user_roles))
-                                            @foreach( $user_roles as $user_role)
-                                                @if($edit)
-                                                    <option value="{{ $user_role->id  }}" {{ $user_role->id == $selected_user->role->id ? 'selected': '' }}>{{ $user_role->name }}</option>
-                                                @else
+
+                                    <div class="col-lg-6 col-md-6 col-sm-3">
+                                        <div class="dropdown bootstrap-select show-tick">
+                                            <select class="selectpicker" data-style="select-with-transition" title="Choose User Group" data-size="7" tabindex="-98"
+                                                    name="user_role" id="user_role" required>
+                                                @foreach( $user_roles as $user_role)
                                                     <option value="{{ $user_role->id  }}">{{ $user_role->name }}</option>
-                                                @endif
-                                            @endforeach
-                                        @endif
-                                    </select>
+                                                @endforeach
+                                            </select>
+
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
 
                         </div>
 
+                        <div class="row">
+
+                            <div class="col-lg-6 col-md-6 col-sm-3">
+                                <div class="dropdown bootstrap-select show-tick">
+                                    <select class="selectpicker" data-style="select-with-transition" title="Choose County" data-size="7" tabindex="-98"
+                                            name="county_id" id="county_id" required>
+                                        @foreach( \App\County::all() as $county)
+                                            <option value="{{ $county->id  }}">{{ $county->name }}</option>
+                                        @endforeach
+                                    </select>
+
+                                </div>
+                            </div>
+
+
+                            <div class="col-lg-6 col-md-6 col-sm-3">
+                                <div class="dropdown bootstrap-select show-tick">
+                                    <select class="selectpicker" data-style="select-with-transition" title="Choose Sub County" data-size="7" tabindex="-98"
+                                            name="sub_county_id" id="sub_county_id" required>
+                                        @foreach( \App\SubCounty::all() as $subcounty)
+                                            <option value="{{ $subcounty->id  }}">{{ $subcounty->name }}</option>
+                                        @endforeach
+                                    </select>
+
+                                </div>
+                            </div>
+
+
+                        </div>
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">

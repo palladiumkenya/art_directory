@@ -61,33 +61,6 @@
             </li>
 
 
-{{--            <li class="nav-item ">--}}
-{{--                <a class="nav-link " data-toggle="collapse"  href="#directory">--}}
-{{--                    <i class="material-icons">receipt</i>--}}
-{{--                    <p> Questionnaires--}}
-{{--                        <b class="caret"></b>--}}
-{{--                    </p>--}}
-{{--                </a>--}}
-{{--                <div class="collapse" id="directory">--}}
-{{--                    <ul class="nav">--}}
-{{--                        <li class="nav-item {{ ('directory' == $current_route->uri) ? 'active child' : '' }} ">--}}
-{{--                            <a class="nav-link" href="{{url('directory')}}">--}}
-{{--                                <span class="sidebar-mini"> Q </span>--}}
-{{--                                <span class="sidebar-normal"> All Questionnaires </span>--}}
-{{--                            </a>--}}
-{{--                        </li>--}}
-
-{{--                        <li class="nav-item {{ ('questions' == $current_route->uri) ? 'active child' : '' }} ">--}}
-{{--                            <a class="nav-link" href="{{url('questions')}}">--}}
-{{--                                <span class="sidebar-mini"> Q </span>--}}
-{{--                                <span class="sidebar-normal"> s </span>--}}
-{{--                            </a>--}}
-{{--                        </li>--}}
-{{--                    </ul>--}}
-{{--                </div>--}}
-{{--            </li>--}}
-
-
             <li class="nav-item {{ ('facilities' == $current_route->uri) ? 'active' : '' }} ">
                 <a class="nav-link" href="{{url('/facilities')}}">
                     <i class="material-icons">local_hospital</i>
@@ -95,12 +68,17 @@
                 </a>
             </li>
 
+            @if(auth()->user()->role->has_perm([2]))
+
             <li class="nav-item {{ ('messages/incoming' == $current_route->uri) ? 'active' : '' }} ">
                 <a class="nav-link" href="{{url('/messages/incoming')}}">
                     <i class="material-icons">chat</i>
                     <p> Incoming Messages </p>
                 </a>
             </li>
+            @endif
+
+            @if(auth()->user()->role->has_perm([3]))
 
             <li class="nav-item {{ ('messages/outgoing' == $current_route->uri) ? 'active' : '' }} ">
                 <a class="nav-link" href="{{url('/messages/outgoing')}}">
@@ -109,10 +87,9 @@
                 </a>
             </li>
 
-           @if(auth()->user()->user_group == 1)  {{--sysadmin--}}
+            @endif
 
-
-
+           @if(auth()->user()->role->has_perm([1]))
 
 
             <li class="nav-item ">
@@ -124,12 +101,12 @@
                 </a>
                 <div class="collapse" id="um">
                     <ul class="nav">
-{{--                        <li class="nav-item {{ ('user_roles' == $current_route->uri) ? 'active child' : '' }} ">--}}
-{{--                            <a class="nav-link" href="{{url('user_roles')}}">--}}
-{{--                                <span class="sidebar-mini"> UR </span>--}}
-{{--                                <span class="sidebar-normal"> User Roles </span>--}}
-{{--                            </a>--}}
-{{--                        </li>--}}
+                        <li class="nav-item {{ ('user_groups' == $current_route->uri) ? 'active child' : '' }} ">
+                            <a class="nav-link" href="{{url('user_groups')}}">
+                                <span class="sidebar-mini"> UG </span>
+                                <span class="sidebar-normal"> User Groups </span>
+                            </a>
+                        </li>
                         <li class="nav-item {{ ('users' == $current_route->uri) ? 'active child' : '' }} ">
                             <a class="nav-link" href="{{url('users')}}">
                                 <span class="sidebar-mini"> AU </span>

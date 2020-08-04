@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\County;
+use App\SubCounty;
 use Carbon\Carbon;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
@@ -9,20 +11,19 @@ use App\IncomingMsg;
 use App\Directory;
 use Illuminate\Mail\Message;
 use AfricasTalking\SDK\AfricasTalking;
+use PHPUnit\Framework\Constraint\Count;
 use Yajra\DataTables\Facades\DataTables;
 
 
 class DirectoryController extends Controller
 {
-    public function send_sms($phone_no, $final_msg)
+    public function send_sms($final_msg, $phone_no)
     {
         // $to=$request->input('to');
         // $message =$request->input('message');
 
-        // $username = env('AT_USER');
-        // $apiKey = env('AT_API_KEY');
-        $username = "mhealthkenya";
-        $apiKey = "9318d173cb9841f09c73bdd117b3c7ce3e6d1fd559d3ca5f547ff2608b6f3212";
+        $username = env('AT_USER');
+        $apiKey = env('AT_API_KEY');
         $AT = new AfricasTalking($username, $apiKey);
 
         // Get one of the services
@@ -50,7 +51,8 @@ class DirectoryController extends Controller
                 $final_msg = 'Facility Number: '  . $get_content->facility_phone . ' ' . 'Facility Name: ' . $get_content->facility_name . ' ' . 'County: ' .
                     $get_content->county . ' ' . 'Sub County: ' . $get_content->sub_county . ' ' . 'Email: '  . $get_content->email_address . ' ' . 'Partner: '  . $get_content->partner;
 
-                $this->send_sms($phone_no, $final_msg);
+                $sending_msg = $this->send_sms($final_msg, $phone_no);
+                echo $sending_msg;
             }
         } else if ($result == 1) {
             $arr_content = explode('/', $trimmed_msg);
@@ -60,7 +62,8 @@ class DirectoryController extends Controller
             foreach ($get_details as $detail) {
 
                 $final_msg = 'Facility Name: ' . $detail->facility_name . ' ' . 'MFL Code: ' . $detail->mfl_code . ' ' . 'County: ' . $detail->county;
-                $this->send_sms($phone_no, $final_msg);
+                $sending_msg = $this->send_sms($final_msg, $phone_no);
+                echo $sending_msg;
             }
         }
         IncomingMsg::where('id', $id)->update(array('processed' => 'Processed'));
@@ -69,7 +72,13 @@ class DirectoryController extends Controller
 
     public  function facilities()
     {
-        $facilities = Directory::all();
+        if (auth()->user()->user_group == 3) { //county admin
+            $facilities = Directory::where('county_id', auth()->user()->county_id)->get();
+        } elseif (auth()->user()->user_group == 4) { //sub county admin
+            $facilities = Directory::where('sub_county_id', auth()->user()->sub_county_id)->get();
+        } else { //others
+            $facilities = Directory::all();
+        }
 
         return view('directory.facilities')->with([
             'facilities' => $facilities,
@@ -79,8 +88,14 @@ class DirectoryController extends Controller
     public function facilitiesDT()
     {
 
+        if (auth()->user()->user_group == 3) { //county admin
+            $facilities = Directory::where('county_id', auth()->user()->county_id)->get();
+        } elseif (auth()->user()->user_group == 4) { //sub county admin
+            $facilities = Directory::where('sub_county_id', auth()->user()->sub_county_id)->get();
+        } else { //others
+            $facilities = Directory::all();
+        }
 
-        $facilities = Directory::all();
 
         return DataTables::of($facilities)
             ->editColumn('mfl_code', function ($facility) {
@@ -92,10 +107,10 @@ class DirectoryController extends Controller
             })
 
             ->editColumn('county', function ($facility) {
-                return $facility->county;
+                return optional(County::find($facility->county_id))->name;
             })
             ->editColumn('sub_county', function ($facility) {
-                return $facility->sub_county;
+                return optional(SubCounty::find($facility->sub_county_id))->name;
             })
 
             ->editColumn('facility_phone', function ($facility) {
@@ -103,13 +118,20 @@ class DirectoryController extends Controller
             })
 
             ->addColumn('actions', function ($facility) { // add custom column
-                $actions = '<div class="pull-right">
-                        <button source="' . route('edit-facility',  $facility->id) . '"
+                $actions = '<div class="pull-right">';
+
+                if (auth()->user()->role->has_perm([4])) {
+                    $actions .= '<button source="' . route('edit-facility',  $facility->id) . '"
                     class="btn btn-warning btn-link btn-sm edit-facility-btn" acs-id="' . $facility->id . '">
                     <i class="material-icons">edit</i> Edit</button>';
-                $actions .= '<form action="' . route('delete-facility',  $facility->id) . '" style="display: inline;" method="post" class="del_facility_form">';
-                $actions .= method_field('DELETE');
-                $actions .= csrf_field() . '<button class="btn btn-danger btn-sm">Delete</button></form>';
+                }
+
+                if (auth()->user()->role->has_perm([5])) {
+                    $actions .= '<form action="' . route('delete-facility',  $facility->id) . '" style="display: inline;" method="post" class="del_facility_form">';
+                    $actions .= method_field('DELETE');
+                    $actions .= csrf_field() . '<button class="btn btn-danger btn-sm">Delete</button></form>';
+                }
+
                 $actions .= '</div>';
                 return $actions;
             })
@@ -125,8 +147,8 @@ class DirectoryController extends Controller
             'facility_name' => 'required',
             'mfl_code' => 'required',
             'partner' => 'required',
-            'county' => 'required',
-            'sub_county' => 'required',
+            'county_id' => 'required',
+            'sub_county_id' => 'required',
             'location' => 'nullable',
             'sub_location' => 'nullable',
             'alt_facility_phone' => 'nullable',
@@ -139,8 +161,8 @@ class DirectoryController extends Controller
         $directory->facility_name = $request->facility_name;
         $directory->mfl_code = $request->mfl_code;
         $directory->partner = $request->partner;
-        $directory->county = $request->county;
-        $directory->sub_county = $request->sub_county;
+        $directory->county_id = $request->county_id;
+        $directory->sub_county_id = $request->sub_county_id;
         $directory->location = $request->location;
         $directory->sub_location = $request->sub_location;
         $directory->alt_facility_phone = $request->alt_facility_phone;
@@ -166,8 +188,8 @@ class DirectoryController extends Controller
             'facility_name' => 'required',
             'mfl_code' => 'required',
             'partner' => 'required',
-            'county' => 'required',
-            'sub_county' => 'required',
+            'county_id' => 'required',
+            'sub_county_id' => 'required',
             'location' => 'nullable',
             'sub_location' => 'nullable',
             'alt_facility_phone' => 'nullable',

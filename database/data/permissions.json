@@ -5,11 +5,23 @@
     "description": "Manage Users"
   },{
     "id": "2",
-    "name": "View Reports",
-    "description": "View Reports"
+    "name": "View Incoming Messages",
+    "description": "View Incoming Messages"
   },{
     "id": "3",
-    "name": "Manage Messaging",
-    "description": "Manage outgoing and incoming messages"
+    "name": "View Outgoing Messages",
+    "description": "View Outgoing Messages"
+  },{
+    "id": "4",
+    "name": "Edit Facility",
+    "description": "Edit Facility"
+  },{
+    "id": "5",
+    "name": "Delete Facility",
+    "description": "Delete Facility"
+  },{
+    "id": "6",
+    "name": "Add Facility",
+    "description": "Add Facility"
   }
 ]
