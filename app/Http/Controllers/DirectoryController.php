@@ -57,13 +57,23 @@ class DirectoryController extends Controller
         } else if ($result == 1) {
             $arr_content = explode('/', $trimmed_msg);
             $arr_facility = $arr_content[1];
-            $arr_fnl_content = preg_replace('/[^A-Za-z0-9\s]/', '', $arr_facility);
-            $get_details = Directory::select('facility_phone', 'facility_name', 'county', 'sub_county', 'email_address', 'partner', 'mfl_code')->where('facility_name', 'LIKE', "%{$arr_fnl_content}%")->get();
-            foreach ($get_details as $detail) {
-
-                $final_msg = 'Facility Name: ' . $detail->facility_name . ' ' . 'MFL Code: ' . $detail->mfl_code . ' ' . 'County: ' . $detail->county;
-                $sending_msg = $this->send_sms($final_msg, $phone_no);
-                echo $sending_msg;
+            $arr_county = $arr_content[2];
+            if (empty($arr_county)) {
+                $arr_fnl_content = preg_replace('/[^A-Za-z0-9\s]/', '', $arr_facility);
+                $get_details = Directory::select('facility_phone', 'facility_name', 'county', 'sub_county', 'email_address', 'partner', 'mfl_code')->where('facility_name', 'LIKE', "%{$arr_fnl_content}%")->get();
+                foreach ($get_details as $detail) {
+                    $final_msg = 'Facility Name: ' . $detail->facility_name . ' ' . 'MFL Code: ' . $detail->mfl_code . ' ' . 'County: ' . $detail->county;
+                    $sending_msg = $this->send_sms($final_msg, $phone_no);
+                    echo $sending_msg;
+                }
+            } else {
+                $arr_fnl_content = preg_replace('/[^A-Za-z0-9\s]/', '', array($arr_facility, $arr_county));
+                $get_details = Directory::select('facility_phone', 'facility_name', 'county', 'sub_county', 'email_address', 'partner', 'mfl_code')->where([['facility_name', 'LIKE', "%{$arr_facility}%"], ['county', 'LIKE', "%{$arr_county}%"]])->get();
+                foreach ($get_details as $detail) {
+                    $final_msg = 'Facility Name: ' . $detail->facility_name . ' ' . 'MFL Code: ' . $detail->mfl_code . ' ' . 'County: ' . $detail->county;
+                    $sending_msg = $this->send_sms($final_msg, $phone_no);
+                    echo $sending_msg;
+                }
             }
         }
         IncomingMsg::where('id', $id)->update(array('processed' => 'Processed'));
