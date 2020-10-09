@@ -51,12 +51,12 @@ Route::group(['middleware' => ['auth']], function () {
 
 
     //facilities
-    Route::get('/facilities','DirectoryController@facilities');
-    Route::post('/facilities','DirectoryController@add_facility')->middleware('perm:6');
-    Route::get('ajax/facilities', 'DirectoryController@facilitiesDT')->name('ajax-facilities');
-    Route::get('facilities/{facility_id}', 'DirectoryController@edit_facility')->name('edit-facility');
-    Route::put('facilities', 'DirectoryController@update_facility');//->name('update-facility');
-    Route::delete('facilities/{facility_id}', 'DirectoryController@delete_facility')->name('delete-facility');
+    Route::get('/facilities','DirController@facilities');
+    Route::post('/facilities','DirController@add_facility')->middleware('perm:6');
+    Route::get('ajax/facilities', 'DirController@facilitiesDT')->name('ajax-facilities');
+    Route::get('facilities/{facility_id}', 'DirController@edit_facility')->name('edit-facility');
+    Route::put('facilities', 'DirController@update_facility');//->name('update-facility');
+    Route::delete('facilities/{facility_id}', 'DirController@delete_facility')->name('delete-facility');
 
     //county sub counties
     Route::get('sub_counties/{county_id}', 'HomeController@sub_counties');

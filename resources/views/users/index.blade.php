@@ -13,6 +13,7 @@
                     {data: 'id', name: 'id'},
                     {data: 'name', name: 'name'},
                     {data: 'role', name: 'role'},
+                    {data: 'partner', name: 'partner'},
                     {data: 'email', name: 'email'},
                 ],
                 /*columnDefs: [
@@ -70,6 +71,7 @@
                                         <th>Id</th>
                                         <th>Name</th>
                                         <th>Role</th>
+                                        <th>Partner</th>
                                         <th>Email</th>
                                     </tr>
                                 </thead>
@@ -78,6 +80,7 @@
                                         <th>Id</th>
                                         <th>Name</th>
                                         <th>Role</th>
+                                        <th>Partner</th>
                                         <th>Email</th>
                                     </tr>
                                 </tfoot>
@@ -151,18 +154,24 @@
                                 </div>
                             </div>
 
-
-                            <div class="col-lg-6 col-md-6 col-sm-3">
-                                <div class="dropdown bootstrap-select show-tick">
-                                    <select class="selectpicker" data-style="select-with-transition" title="Choose Sub County" data-size="7" tabindex="-98"
-                                            name="sub_county_id" id="sub_county_id" required>
-                                        @foreach( \App\SubCounty::all() as $subcounty)
-                                            <option value="{{ $subcounty->id  }}">{{ $subcounty->name }}</option>
-                                        @endforeach
-                                    </select>
-
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label" for="partner"> Partner </label>
+                                    <input type="text" class="form-control" id="partner" name="partner" />
                                 </div>
                             </div>
+
+{{--                            <div class="col-lg-6 col-md-6 col-sm-3">--}}
+{{--                                <div class="dropdown bootstrap-select show-tick">--}}
+{{--                                    <select class="selectpicker" data-style="select-with-transition" title="Choose Sub County" data-size="7" tabindex="-98"--}}
+{{--                                            name="sub_county_id" id="sub_county_id" required>--}}
+{{--                                        @foreach( \App\SubCounty::all() as $subcounty)--}}
+{{--                                            <option value="{{ $subcounty->id  }}">{{ $subcounty->name }}</option>--}}
+{{--                                        @endforeach--}}
+{{--                                    </select>--}}
+
+{{--                                </div>--}}
+{{--                            </div>--}}
 
 
                         </div>

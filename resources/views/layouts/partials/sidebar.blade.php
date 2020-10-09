@@ -25,7 +25,7 @@
                 </span>
                 </a>
                 <a class=" col-8 offset-2">
-                    <span class="badge badge-secondary" style="font-size:9px;">{{auth()->user()->role->name}}</span>
+                    <span class="badge badge-secondary" style="font-size:9px;">{{auth()->user()->role->name}}  {{auth()->user()->partner== null ? auth()->user()->partner : '- '.auth()->user()->partner}}</span>
                 </a>
 
                 <div class="collapse" id="collapseExample">

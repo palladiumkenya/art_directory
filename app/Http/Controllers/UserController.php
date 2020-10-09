@@ -72,7 +72,7 @@ class UserController extends Controller
             'user_role' => 'required|max:10',
             'email' => 'required|email|max:255|unique:users,email',
             'county_id' => 'required',
-            'sub_county_id' => 'required',
+//            'sub_county_id' => 'required',
             'name' => 'required',
             'password' => 'required',
         ]);
@@ -85,7 +85,8 @@ class UserController extends Controller
         $user->user_group = $request->user_role;
         $user->email = $request->email;
         $user->county_id = $request->county_id;
-        $user->sub_county_id = $request->sub_county_id;
+        $user->sub_county_id = 1;//$request->sub_county_id;
+        $user->partner = $request->partner;
         $user->password = bcrypt($request->password);
 //        $user->password = bcrypt($this->random_pass);
 
