@@ -23,7 +23,7 @@ class DirectoryController extends Controller
         // $message =$request->input('message');
 
         $username = 'mhealthkenya';
-        $apiKey = '9318d173cb9841f09c73bdd117b3c7ce3e6d1fd559d3ca5f547ff2608b6f3212';
+        $apiKey = 'a134a43032612487eb3f4d5fcc4c6c7538d56afdd871dcd284ab171d778c4e51';
         $AT = new AfricasTalking($username, $apiKey);
 
         // Get one of the services
@@ -46,7 +46,7 @@ class DirectoryController extends Controller
         $regex = "#^" . $string . "(.*)$#i";
         $result = preg_match($regex, $trimmed_msg);
         if ($result == 0) {
-            if (ctype_digit($trimmed_msg) && strlen($trimmed_msg) == 5) {
+            if (ctype_digit($trimmed_msg) && strlen($trimmed_msg) > 0) {
                 $get_content = Directory::select('facility_phone', 'facility_name', 'county', 'sub_county', 'email_address', 'partner')->where('mfl_code', $trimmed_msg)->first();
                 $final_msg = 'Facility Number: '  . $get_content->facility_phone . ' ' . 'Facility Name: ' . $get_content->facility_name . ' ' . 'County: ' .
                     $get_content->county . ' ' . 'Sub County: ' . $get_content->sub_county . ' ' . 'Email: '  . $get_content->email_address . ' ' . 'Partner: '  . $get_content->partner;
