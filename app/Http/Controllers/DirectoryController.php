@@ -22,8 +22,8 @@ class DirectoryController extends Controller
         // $to=$request->input('to');
         // $message =$request->input('message');
 
-        $username = 'mhealthkenya';
-        $apiKey = 'a134a43032612487eb3f4d5fcc4c6c7538d56afdd871dcd284ab171d778c4e51';
+        $username = 'Ushauri_KE';
+        $apiKey = '972bdb6f53893725b09eaa3581a264ebf77b0e816ef5e9cb9f29e0c7738e41c1';
         $AT = new AfricasTalking($username, $apiKey);
 
         // Get one of the services
@@ -78,5 +78,4 @@ class DirectoryController extends Controller
         }
         IncomingMsg::where('id', $id)->update(array('processed' => 'Processed'));
     }
-
 }
