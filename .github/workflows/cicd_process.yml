@@ -1,0 +1,31 @@
+name: deploy to test instance
+on:
+  push:
+    branches: [ master ]
+jobs:
+
+  build:
+    name: Deploy
+    runs-on: ubuntu-latest
+    steps:
+    - name: executing remote connection
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.HOST }}
+        username: ${{ secrets.USERNAME }}
+        key: ${{ secrets.CICD_SECRET }}
+        port: ${{ secrets.PORT }}
+        script: |
+          git config --global --add safe.directory /apps/github-workflows/mhealth-apps/art_directory/      
+          cd /apps/github-workflows/mhealth-apps/art_directory/
+          git pull origin main
+          git status
+           cp /apps/configs/art_directory/.env /apps/github-workflows/mhealth-apps/art_directory/
+          cp /apps/configs/art_directory/docker-compose.yml /apps/github-workflows/mhealth-apps/art_directory/
+          cp /apps/configs/art_directory/nginx.dockerfile /apps/github-workflows/mhealth-apps/art_directory/
+          cp /apps/configs/art_directory/php.dockerfile /apps/github-workflows/mhealth-apps/art_directory/
+          cp -r /apps/configs/art_directory/nginx /apps/github-workflows/mhealth-apps/art_directory/
+          docker-compose down
+          docker-compose rm -f
+          sudo docker-compose --env-file .env up -d --build site  
+          
