@@ -14,8 +14,8 @@
             <script>
                 document.write(new Date().getFullYear())
             </script>, made by
-            <a href="https://www.mhealthkenya.org" target="_blank" style="color: black !important;">
-                <strong>mHealth</strong>
+            <a href="https://kenyahmis.org/" target="_blank" style="color: black !important;">
+                <strong>KenyaHMIS</strong>
             </a>.
         </div>
     </div>

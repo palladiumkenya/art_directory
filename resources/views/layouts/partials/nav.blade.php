@@ -8,7 +8,12 @@
                 <span class="icon-bar"></span>
             </button>
             <a class="navbar-brand" href="{{ url('/') }}">
-                <img width="300" src="{{ url('images/logo.jpg') }}"/>
+                <img width="200" src="{{ url('images/Kehmis.png') }}"/>
+
+            </a>
+            <a class="navbar-brand" href="{{ url('/') }}">
+
+                <img width="100" src="{{ url('images/nascop.png') }}"/>
             </a>
         </div>
         <div class="collapse navbar-collapse">
