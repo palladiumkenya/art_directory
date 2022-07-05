@@ -278,7 +278,7 @@
                             <div class="row">
                                 <div class="col-sm-6">
                                     <label class="control-label" for="mfl_code">MFL Code <span style="color: red">*</span></label>
-                                    <input type="text" class="form-control" id="mfl_code" name="mfl_code"required/>
+                                    <input type="text" class="form-control" id="mfl_code" name="mfl_code" minlength="5" maxlength="5" required/>
                                 </div>
 
                                 <div class="col-sm-6">
